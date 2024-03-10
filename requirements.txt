@@ -1,6 +1,16 @@
 asgiref==3.7.2
+async-timeout==4.0.3
+channels==4.0.0
+channels-redis==4.2.0
 Django==4.2.11
+django-cors-headers==4.3.1
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.3.1
+msgpack==1.0.8
 psycopg2==2.9.9
+PyJWT==2.8.0
+pytz==2024.1
+redis==5.0.2
 sqlparse==0.4.4
 typing_extensions==4.10.0
 tzdata==2024.1
