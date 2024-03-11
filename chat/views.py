@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 
 from .models import Conversation, Message
 from .serializers import (
+    ConversationCreateSerializer,
     ConversationSerializer,
     MessageSerializer,
     SendMessageSerializer,
@@ -15,27 +16,35 @@ from .serializers import (
 )
 
 
-class ConversationList(GenericAPIView):
-    queryset = Conversation.objects.all()
-    serializer_class = ConversationSerializer
-    permission_classes = [IsAuthenticated]
+class ConversationAPIView(GenericAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_classes = {
+        "GET": ConversationSerializer,
+        "POST": ConversationCreateSerializer,
+    }
+
+    def get_serializer_class(self):
+        return self.serializer_classes.get(self.request.method)
 
     def get(self, request, *args, **kwargs):
         user = request.user
         conversations = user.conversations.all()
-        serializer = self.get_serializer(conversations, many=True)
+        serializer = self.get_serializer_class()(conversations, many=True)
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
-        participants = request.data.get("participants")
-        conversation = Conversation.objects.create()
-        conversation.participants.add(*participants)
-        serializer = self.get_serializer(conversation)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        seriliazer = self.get_serializer_class()(data=request.data)
+        if serializer.is_valid():
+            participants = request.data.get("participants")
+            conversation = Conversation.objects.create()
+            conversation.participants.add(*participants)
+            serializer = ConversationSerializer(conversation)
+            return Response(serializer.data, status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 
 class ConversationDetail(GenericAPIView):
-    queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
     permission_classes = [IsAuthenticated]
 
@@ -43,18 +52,6 @@ class ConversationDetail(GenericAPIView):
         conversation = self.get_object()
         serializer = self.get_serializer(conversation)
         return Response(serializer.data)
-
-
-class StartConversation(GenericAPIView):
-    serializer_class = ConversationSerializer
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, *args, **kwargs):
-        participants = request.data.get("participants")
-        conversation = Conversation.objects.create()
-        conversation.participants.add(*participants)
-        serializer = self.get_serializer(conversation)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class MessageList(GenericAPIView):
@@ -69,13 +66,6 @@ class MessageList(GenericAPIView):
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(sender=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class MessageDetail(GenericAPIView):
@@ -115,16 +105,30 @@ class UpdateReadReceiptAPIView(GenericAPIView):
             message_id = serializer.validated_data.get("message_id")
             message = Message.objects.get(id=message_id)
 
-            if user != message.sender:
+            if message.read:
+                return Response(
+                    {
+                        "message": "marked as read already",
+                    },
+                    status.HTTP_200_OK,
+                )
+
+            if (user != message.sender) and (user in message.conversation.participants.all()):
                 message.mark_as_read()
+
+                return Response(
+                    {
+                        "message": "read receipt updated",
+                    },
+                    status.HTTP_200_OK,
+                )
 
             return Response(
                 {
-                    "message": "read receipt updated",
+                    "message": "not read",
                 },
                 status.HTTP_200_OK,
             )
-
         except serializers.ValidationError:
             return Response(
                 serializer.errors,
