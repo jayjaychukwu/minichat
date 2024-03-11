@@ -12,12 +12,25 @@ from .serializers import MessageSerializer
 
 class ChatConsumer(WebsocketConsumer):
 
+    def is_participant(self):
+        return self.user in self.conversation.participants.all()
+
     def connect(self):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
+        self.user = self.scope["user"]
+
+        if not self.user:
+            self.close({"message": "invalid auth token"})
 
         # check if the conversation exists
-        self.conversation = get_object_or_404(Conversation, id=self.room_name)
+        try:
+            self.conversation = Conversation.objects.get(id=self.room_name)
+        except Conversation.DoesNotExist:
+            self.close({"message": "this conversation does not exist on our system"})
+
+        if not self.is_participant():
+            self.close({"message": "this user is not part of this conversation"})
 
         # join room group
         async_to_sync(self.channel_layer.group_add)(

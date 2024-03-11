@@ -7,7 +7,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Conversation, Message
-from .serializers import ConversationSerializer, MessageSerializer
+from .serializers import (
+    ConversationSerializer,
+    MessageSerializer,
+    SendMessageSerializer,
+    UpdateReadReceiptSerializer,
+)
 
 
 class ConversationList(GenericAPIView):
@@ -97,18 +102,33 @@ class MessageDetail(GenericAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class UpdateReadReceiptAPIView(APIView):
+class UpdateReadReceiptAPIView(GenericAPIView):
+    serializer_class = UpdateReadReceiptSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
     def post(self, request):
+        user = request.user
+        serializer = self.serializer_class(data=request.data)
+
         try:
-            message_id = request.data.get("message_id")
+            serializer.is_valid(raise_exception=True)
+            message_id = serializer.validated_data.get("message_id")
             message = Message.objects.get(id=message_id)
-            message.read = True
-            message.save()
+
+            if user != message.sender:
+                message.mark_as_read()
+
             return Response(
                 {
                     "message": "read receipt updated",
                 },
                 status.HTTP_200_OK,
+            )
+
+        except serializers.ValidationError:
+            return Response(
+                serializer.errors,
+                status.HTTP_422_UNPROCESSABLE_ENTITY,
             )
         except Message.DoesNotExist:
             return Response(
@@ -127,13 +147,24 @@ class UpdateReadReceiptAPIView(APIView):
             )
 
 
-class SendMessageAPIView(APIView):
+class SendMessageAPIView(GenericAPIView):
+    serializer_class = SendMessageSerializer
     permissions = (permissions.IsAuthenticated,)
 
     def post(self, request):
         sender = request.user
-        recipient_id = request.data.get("recipient_id")
-        message_text = request.data.get("message")
+        serializer = self.serializer_class(data=request.data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except serializers.ValidationError as err:
+            return Response(
+                serializer.errors,
+                status.HTTP_422_UNPROCESSABLE_ENTITY,
+            )
+
+        recipient_id = serializer.validated_data.get("recipient_id")
+        message_text = serializer.validated_data.get("message")
 
         conversation = Conversation.get_or_create_conversation(sender=sender, recipient_id=recipient_id)
 
@@ -151,21 +182,6 @@ class SendMessageAPIView(APIView):
             serializer.data,
             status.HTTP_201_CREATED,
         )
-
-    # def post(self, request):
-    #     serializer = MessageSerializer(data=request.data)
-    #     try:
-    #         serializer.is_valid(raise_exception=True)
-    #     except serializers.ValidationError as err:
-    #         return Response(
-    #             serializer.errors,
-    #             status.HTTP_422_UNPROCESSABLE_ENTITY,
-    #         )
-
-    #     message = serializer.save()
-    #     self.send_message_through_websocket(message)
-
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def send_message_through_websocket(self, message: Message):
         channel_layer = get_channel_layer()

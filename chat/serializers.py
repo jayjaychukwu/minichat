@@ -24,3 +24,12 @@ class ConversationSerializer(serializers.ModelSerializer):
             "participants",
             "messages",
         ]
+
+
+class UpdateReadReceiptSerializer(serializers.Serializer):
+    message_id = serializers.IntegerField()
+
+
+class SendMessageSerializer(serializers.Serializer):
+    recipient_id = serializers.IntegerField()
+    message = serializers.CharField()

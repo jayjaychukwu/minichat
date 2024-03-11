@@ -37,5 +37,8 @@ class Message(BaseModel):
         ordering = ("-created_at",)
 
     def mark_as_read(self):
+        """
+        update a message instance to read.
+        """
         self.read = True
         self.save()
