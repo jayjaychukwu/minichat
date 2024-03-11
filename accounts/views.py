@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from .models import User
 from .serializers import UserSerializer
 
 
@@ -27,3 +28,11 @@ class UserRegistrationAPIView(APIView):
             },
             status=status.HTTP_201_CREATED,
         )
+
+
+class UsersAPIView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        users = User.objects.all().order_by("username")
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
