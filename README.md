@@ -45,7 +45,7 @@ A REST API chat application utilizing Python, Django, DRF, PostgreSQL, Channels.
 - To create a superuser for the admin dashboard, run the following command:
   
     ```shell
-    docker-compose run web python manage.py createsuperuser
+    docker-compose exec web python manage.py createsuperuser
     ```
 
     Follow the prompts to create a superuser account.
