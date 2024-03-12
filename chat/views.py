@@ -46,50 +46,22 @@ class ConversationAPIView(GenericAPIView):
 
 class ConversationDetail(GenericAPIView):
     serializer_class = ConversationSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
-        conversation = self.get_object()
+        conversation_id = kwargs.get("id")  # Retrieve conversation ID from URL parameter
+        try:
+            conversation = Conversation.objects.get(id=conversation_id)  # Retrieve conversation object
+        except Conversation.DoesNotExist:
+            return Response(
+                {"message": "conversation not found"},
+                status.HTTP_404_NOT_FOUND,
+            )
         serializer = self.get_serializer(conversation)
-        return Response(serializer.data)
-
-
-class MessageList(GenericAPIView):
-    serializer_class = MessageSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        conversation_id = self.kwargs["conversation_id"]
-        return Message.objects.filter(conversation_id=conversation_id)
-
-    def get(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
-
-class MessageDetail(GenericAPIView):
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, *args, **kwargs):
-        message = self.get_object()
-        serializer = self.get_serializer(message)
-        return Response(serializer.data)
-
-    def put(self, request, *args, **kwargs):
-        message = self.get_object()
-        serializer = self.get_serializer(message, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, *args, **kwargs):
-        message = self.get_object()
-        message.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
 
 
 class UpdateReadReceiptAPIView(GenericAPIView):
