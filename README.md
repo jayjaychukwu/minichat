@@ -32,7 +32,7 @@ A REST API chat application utilizing Python, Django, DRF, PostgreSQL, Channels.
 3. Make migrations for the accounts and chat app and migrate
 
    ```shell
-   docker-compose exec web p python manage.py makemigrations accounts chat
+   docker-compose exec web python manage.py makemigrations accounts chat
    docker-compose exec web python manage.py migrate
    ```
 
