@@ -142,7 +142,10 @@ class SendMessageAPIView(GenericAPIView):
         recipient_id = serializer.validated_data.get("recipient_id")
         message_text = serializer.validated_data.get("message")
 
-        conversation = Conversation.get_or_create_conversation(sender=sender, recipient_id=recipient_id)
+        try:
+            conversation = Conversation.get_or_create_conversation(sender=sender, recipient_id=recipient_id)
+        except ValueError as err:
+            return Response({"message": str(err)}, status.HTTP_400_BAD_REQUEST)
 
         message = Message.objects.create(
             sender=sender,

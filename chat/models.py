@@ -9,7 +9,10 @@ class Conversation(BaseModel):
 
     @classmethod
     def get_or_create_conversation(cls, sender, recipient_id):
-        recipient = get_user_model().objects.get(id=recipient_id)
+        try:
+            recipient = get_user_model().objects.get(id=recipient_id)
+        except get_user_model().DoesNotExist:
+            raise ValueError("this user does not exist")
 
         # check if a conversation already exists
         conversation = cls.objects.filter(participants=sender).filter(participants=recipient)

@@ -65,17 +65,6 @@
 			"response": []
 		},
 		{
-			"name": "Start Conversation",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": ""
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Get Users",
 			"request": {
 				"method": "GET",

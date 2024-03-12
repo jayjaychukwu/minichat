@@ -15,7 +15,7 @@ A REST API chat application utilizing Python, Django, DRF, PostgreSQL, Channels.
    git clone https://github.com/jayjaychukwu/minichat.git
    ```
 
-2. Spin up the project using Docker Compose:
+2. Enter the minichat directory and spin up the project using Docker Compose:
 
    Either you use
 
@@ -29,11 +29,17 @@ A REST API chat application utilizing Python, Django, DRF, PostgreSQL, Channels.
    docker-compose up -d --build
    ```
 
-3. Make migrations for the dx app and migrate
+3. Make migrations for the accounts and chat app and migrate
 
    ```shell
    docker-compose run web python manage.py makemigrations accounts chat
    docker-compose run web python manage.py migrate
+   ```
+
+4. Restart the web service
+
+   ```shell
+   docker-compose restart web  
    ```
 
 - To create a superuser for the admin dashboard, run the following command:
