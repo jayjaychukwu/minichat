@@ -1,0 +1,619 @@
+{
+	"info": {
+		"_postman_id": "7acb1823-d16a-4f78-8721-2532ee5530c0",
+		"name": "Minichat",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22976805"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"admin1\",\n  \"password\": \"admin12345\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/accounts/login/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"accounts",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"admin2\",\n  \"password\": \"admin12345\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/accounts/register/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"accounts",
+						"register",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Start Conversation",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/accounts/users/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"accounts",
+						"users",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get users to chat with",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/accounts/users/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"accounts",
+								"users",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, origin"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "92"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 2,\n        \"username\": \"admin1\"\n    },\n    {\n        \"id\": 3,\n        \"username\": \"admin2\"\n    },\n    {\n        \"id\": 4,\n        \"username\": \"superadmin\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Send Message",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"recipient_id\": 3,\n  \"message\": \"are you there? hehe\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/chat/send-message/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"chat",
+						"send-message",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Sent Message",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user1token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"recipient_id\": 3,\n  \"message\": \"are you there? hehe\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/chat/send-message/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"chat",
+								"send-message",
+								""
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, origin"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "92"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 79,\n    \"sender\": 2,\n    \"text\": \"are you there? hehe\",\n    \"created_at\": \"2024-03-11T22:50:11.643583Z\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Conversations",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8000/chat/conversation/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"chat",
+						"conversation",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Conversations of user",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user1token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8000/chat/conversation/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"chat",
+								"conversation",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, origin"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, POST, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1530"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"participants\": [\n            {\n                \"id\": 2,\n                \"username\": \"admin1\"\n            },\n            {\n                \"id\": 3,\n                \"username\": \"admin2\"\n            }\n        ],\n        \"messages\": [\n            {\n                \"id\": 79,\n                \"sender\": 2,\n                \"text\": \"are you there? hehe\",\n                \"read\": true,\n                \"created_at\": \"2024-03-11T22:50:11.643583Z\"\n            },\n            {\n                \"id\": 78,\n                \"sender\": 2,\n                \"text\": \"are you there?\",\n                \"read\": false,\n                \"created_at\": \"2024-03-11T11:30:31.136163Z\"\n            },\n            {\n                \"id\": 77,\n                \"sender\": 2,\n                \"text\": \"hello????\",\n                \"read\": false,\n                \"created_at\": \"2024-03-11T11:29:55.549479Z\"\n            },\n            {\n                \"id\": 76,\n                \"sender\": 2,\n                \"text\": \"hello????\",\n                \"read\": false,\n                \"created_at\": \"2024-03-11T11:28:30.118902Z\"\n            },\n            {\n                \"id\": 75,\n                \"sender\": 2,\n                \"text\": \"yo!! how far\",\n                \"read\": false,\n                \"created_at\": \"2024-03-11T11:26:54.758970Z\"\n            },\n            {\n                \"id\": 74,\n                \"sender\": 2,\n                \"text\": \"what's up bro\",\n                \"read\": false,\n                \"created_at\": \"2024-03-11T06:27:26.074943Z\"\n            },\n            {\n                \"id\": 73,\n                \"sender\": 2,\n                \"text\": \"what's up bro\",\n                \"read\": false,\n                \"created_at\": \"2024-03-11T06:26:28.190622Z\"\n            },\n            {\n                \"id\": 72,\n                \"sender\": 2,\n                \"text\": \"hello\",\n                \"read\": false,\n                \"created_at\": \"2024-03-10T21:41:32.012477Z\"\n            },\n            {\n                \"id\": 71,\n                \"sender\": 2,\n                \"text\": \"hello\",\n                \"read\": false,\n                \"created_at\": \"2024-03-10T21:39:49.254308Z\"\n            },\n            {\n                \"id\": 70,\n                \"sender\": 2,\n                \"text\": \"hello\",\n                \"read\": false,\n                \"created_at\": \"2024-03-10T21:39:26.399989Z\"\n            },\n            {\n                \"id\": 69,\n                \"sender\": 2,\n                \"text\": \"hello\",\n                \"read\": false,\n                \"created_at\": \"2024-03-10T21:33:42.468576Z\"\n            },\n            {\n                \"id\": 68,\n                \"sender\": 2,\n                \"text\": \"hello\",\n                \"read\": false,\n                \"created_at\": \"2024-03-10T21:33:00.719580Z\"\n            },\n            {\n                \"id\": 67,\n                \"sender\": 2,\n                \"text\": \"hello\",\n                \"read\": false,\n                \"created_at\": \"2024-03-10T21:26:51.771717Z\"\n            },\n            {\n                \"id\": 34,\n                \"sender\": 2,\n                \"text\": \"hello\",\n                \"read\": false,\n                \"created_at\": \"2024-03-10T21:23:20.324319Z\"\n            },\n            {\n                \"id\": 1,\n                \"sender\": 2,\n                \"text\": \"hello\",\n                \"read\": false,\n                \"created_at\": \"2024-03-10T19:55:20.542279Z\"\n            }\n        ]\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Update Read Receipt",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"message_id\": 78\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/chat/read-receipt/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"chat",
+						"read-receipt",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Read by Recipient",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user2token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message_id\": 79\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/chat/read-receipt/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"chat",
+								"read-receipt",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, origin"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "34"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"read receipt updated\"\n}"
+				},
+				{
+					"name": "Read by Sender",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user1token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message_id\": 78\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/chat/read-receipt/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"chat",
+								"read-receipt",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, origin"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "22"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"not read\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Conversation History",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "Conversation History example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user1token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8000/chat/conversation/1/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"chat",
+								"conversation",
+								"1",
+								""
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, origin"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1528"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"participants\": [\n        {\n            \"id\": 2,\n            \"username\": \"admin1\"\n        },\n        {\n            \"id\": 3,\n            \"username\": \"admin2\"\n        }\n    ],\n    \"messages\": [\n        {\n            \"id\": 79,\n            \"sender\": 2,\n            \"text\": \"are you there? hehe\",\n            \"read\": true,\n            \"created_at\": \"2024-03-11T22:50:11.643583Z\"\n        },\n        {\n            \"id\": 78,\n            \"sender\": 2,\n            \"text\": \"are you there?\",\n            \"read\": false,\n            \"created_at\": \"2024-03-11T11:30:31.136163Z\"\n        },\n        {\n            \"id\": 77,\n            \"sender\": 2,\n            \"text\": \"hello????\",\n            \"read\": false,\n            \"created_at\": \"2024-03-11T11:29:55.549479Z\"\n        },\n        {\n            \"id\": 76,\n            \"sender\": 2,\n            \"text\": \"hello????\",\n            \"read\": false,\n            \"created_at\": \"2024-03-11T11:28:30.118902Z\"\n        },\n        {\n            \"id\": 75,\n            \"sender\": 2,\n            \"text\": \"yo!! how far\",\n            \"read\": false,\n            \"created_at\": \"2024-03-11T11:26:54.758970Z\"\n        },\n        {\n            \"id\": 74,\n            \"sender\": 2,\n            \"text\": \"what's up bro\",\n            \"read\": false,\n            \"created_at\": \"2024-03-11T06:27:26.074943Z\"\n        },\n        {\n            \"id\": 73,\n            \"sender\": 2,\n            \"text\": \"what's up bro\",\n            \"read\": false,\n            \"created_at\": \"2024-03-11T06:26:28.190622Z\"\n        },\n        {\n            \"id\": 72,\n            \"sender\": 2,\n            \"text\": \"hello\",\n            \"read\": false,\n            \"created_at\": \"2024-03-10T21:41:32.012477Z\"\n        },\n        {\n            \"id\": 71,\n            \"sender\": 2,\n            \"text\": \"hello\",\n            \"read\": false,\n            \"created_at\": \"2024-03-10T21:39:49.254308Z\"\n        },\n        {\n            \"id\": 70,\n            \"sender\": 2,\n            \"text\": \"hello\",\n            \"read\": false,\n            \"created_at\": \"2024-03-10T21:39:26.399989Z\"\n        },\n        {\n            \"id\": 69,\n            \"sender\": 2,\n            \"text\": \"hello\",\n            \"read\": false,\n            \"created_at\": \"2024-03-10T21:33:42.468576Z\"\n        },\n        {\n            \"id\": 68,\n            \"sender\": 2,\n            \"text\": \"hello\",\n            \"read\": false,\n            \"created_at\": \"2024-03-10T21:33:00.719580Z\"\n        },\n        {\n            \"id\": 67,\n            \"sender\": 2,\n            \"text\": \"hello\",\n            \"read\": false,\n            \"created_at\": \"2024-03-10T21:26:51.771717Z\"\n        },\n        {\n            \"id\": 34,\n            \"sender\": 2,\n            \"text\": \"hello\",\n            \"read\": false,\n            \"created_at\": \"2024-03-10T21:23:20.324319Z\"\n        },\n        {\n            \"id\": 1,\n            \"sender\": 2,\n            \"text\": \"hello\",\n            \"read\": false,\n            \"created_at\": \"2024-03-10T19:55:20.542279Z\"\n        }\n    ]\n}"
+				}
+			]
+		}
+	]
+}

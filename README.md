@@ -47,22 +47,12 @@ A REST API chat application utilizing Python, Django, DRF, PostgreSQL, Channels.
 
 ## API Documentation
 
-- Swagger Docs: `http://localhost:8000/`
-- ReDoc: `http://localhost:8000/redoc/`
+- Postman Docs: docs/Minichat.postman_collection.json
+- Websockets can be tested on postman: localhost:8000/ws/chat/{conversation_id}/
 
 ## Architecture
 
 The project follows a Django architecture and utilizes the Django REST Framework for building the API. Docker is used for containerization, providing an isolated and consistent environment for development and deployment.
-
-## Caching
-
-Caching has been implemented in the project using Django's caching mechanisms. Decorators such as cache_page have been applied to specific endpoints, such as list and retrieve operations, to improve performance by storing the response data in memory. This helps reduce the need for executing the same expensive database queries or computations repeatedly, resulting in faster response times for subsequent requests.
-
-## Transaction Atomicity
-
-The project leverages the transaction.atomic() method provided by Django's database API to ensure atomicity and improve performance. By encapsulating a block of code for uploading CSV files within transaction.atomic(), all database operations within that block are executed as a single transaction. This approach reduces the number of round trips between the application and the database server, leading to improved performance and efficiency. Additionally, it helps maintain data consistency and integrity by rolling back the entire transaction if any operation within the block fails, preventing partial updates and keeping the database in a consistent state.
-
-By employing caching and utilizing transaction atomicity, the project optimizes performance, reduces database round trips, and ensures the reliability and integrity of data operations.
 
 ## Support and Feedback
 
